@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -87,23 +87,31 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
+    # This code is written by Ankit Vora for the course CS188.x
+
     import pdb
     currentState = problem.getStartState()
     nodesVisited = util.Stack()
-    nodesToBeVisited = util.Stack()  
-    currentPos = currentState    
+    nodesToBeVisited = util.Stack()
+    currentPos = currentState
+
+    "Declare parent and direction dictionaries"
     parent = {}
     direction = {}
     #pdb.set_trace()
+
+    "Start DFS"
     while not problem.isGoalState(currentPos):
         #print 'Current State is :',currentPos
         nodesVisited.push(currentPos)
         currentSuccessors = problem.getSuccessors(currentPos)
-        #print 'Current Successors are :',currentSuccessors        
-        for successor in currentSuccessors:                       
+        #print 'Current Successors are :',currentSuccessors
+
+        "Loop through all successors of a node"
+        for successor in currentSuccessors:
             if successor[0] in nodesVisited.list:
                 continue
-            elif successor[0] in nodesToBeVisited.list:                
+            elif successor[0] in nodesToBeVisited.list:
                 parent[successor[0]] = currentPos
                 direction[successor[0]] = successor[1]
                 continue
@@ -111,25 +119,31 @@ def depthFirstSearch(problem):
                 nodesToBeVisited.push(successor[0])
                 parent[successor[0]] = currentPos
                 direction[successor[0]] = successor[1]
+
+        "Choose the node based on LIFO by popping the stack"
         currentPos = nodesToBeVisited.pop();
-    goal = currentPos  
+    goal = currentPos
     #print 'Final current position is :',currentPos
     path = []
     way = []
-    current = goal    
+    current = goal
+
+    "Retrace back to get the path"
     while current!=problem.getStartState():
         path.append(current)
         way.append(direction[current])
         current = parent[current]
     path.append(problem.getStartState())
     path.reverse()
-    way.reverse()    
+    way.reverse()
     return way
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+    # This code is written by Ankit Vora for the course CS188.x
+
     import pdb
     try:
         problem.count
@@ -137,11 +151,13 @@ def breadthFirstSearch(problem):
         flag = False
     else:
         flag = True
-    if flag==False:        
+    if flag==False:
+
+        "Similar to previous code but used Queue instead of Stacks"
         currentState = problem.getStartState()
         nodesVisited = util.Queue()
-        nodesToBeVisited = util.Queue()  
-        currentPos = currentState    
+        nodesToBeVisited = util.Queue()
+        currentPos = currentState
         parent = {}
         direction = {}
         #pdb.set_trace()
@@ -149,62 +165,62 @@ def breadthFirstSearch(problem):
             #print 'Current State is :',currentPos
             nodesVisited.push(currentPos)
             currentSuccessors = problem.getSuccessors(currentPos)
-            #print 'Current Successors are :',currentSuccessors        
-            for successor in currentSuccessors:                       
+            #print 'Current Successors are :',currentSuccessors
+            for successor in currentSuccessors:
                 if successor[0] in nodesVisited.list:
                     continue
-                elif successor[0] in nodesToBeVisited.list:      
+                elif successor[0] in nodesToBeVisited.list:
                     continue
                 elif successor[0] not in nodesToBeVisited.list:
                     nodesToBeVisited.push(successor[0])
                     parent[successor[0]] = currentPos
                     direction[successor[0]] = successor[1]
             currentPos = nodesToBeVisited.pop();
-        goal = currentPos  
+        goal = currentPos
         #print 'Final current position is :',currentPos
         path = []
         way = []
-        current = goal    
+        current = goal
         while current!=problem.getStartState():
             path.append(current)
             way.append(direction[current])
             current = parent[current]
         path.append(problem.getStartState())
         path.reverse()
-        way.reverse()    
+        way.reverse()
         return way
         util.raiseNotDefined()
     else:
         startState = problem.getStartState()
         nodesVisited = util.Queue()
-        nodesToBeVisited = util.Queue()  
-        currentPos = startState    
+        nodesToBeVisited = util.Queue()
+        currentPos = startState
         parent = {}
         direction = {}
         finalPath = []
-        while problem.count!=4:            
+        while problem.count!=4:
             #pdb.set_trace()
             problem.goal = problem.corners[problem.goalOrder[problem.count]]
             while problem.goal!=currentPos:
-                #print problem.goal                
+                #print problem.goal
                 #print 'Current State is :',currentPos
                 nodesVisited.push(currentPos)
                 currentSuccessors = problem.getSuccessors(currentPos)
-                #print 'Current Successors are :',currentSuccessors        
-                for successor in currentSuccessors:                       
+                #print 'Current Successors are :',currentSuccessors
+                for successor in currentSuccessors:
                     if successor[0] in nodesVisited.list:
                         continue
-                    elif successor[0] in nodesToBeVisited.list:      
+                    elif successor[0] in nodesToBeVisited.list:
                         continue
                     elif successor[0] not in nodesToBeVisited.list:
                         nodesToBeVisited.push(successor[0])
                         parent[successor[0]] = currentPos
                         direction[successor[0]] = successor[1]
-                currentPos = nodesToBeVisited.pop() 
-            goal = currentPos  
+                currentPos = nodesToBeVisited.pop()
+            goal = currentPos
             path = []
             way = []
-            current = goal    
+            current = goal
             while current!=startState:
                 path.append(current)
                 way.append(direction[current])
@@ -212,10 +228,10 @@ def breadthFirstSearch(problem):
             path.append(startState)
             path.reverse()
             way.reverse()
-            finalPath.append(way)  
+            finalPath.append(way)
             startState = goal
             nodesVisited = util.Queue()
-            nodesToBeVisited = util.Queue()                
+            nodesToBeVisited = util.Queue()
             parent = {}
             #print 'is here'
             #print problem.goalState
@@ -233,52 +249,67 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+    #This code is written by Ankit Vora for the course CS188.x
+
+    "Implement UCS based on the true cost to any given node"
     import pdb
     currentState = problem.getStartState()
     nodesVisited = util.Queue()
-    nodesToBeVisited = util.PriorityQueue()  
+
+    "Need to use priority Queue for the nodesToBeVisited variable"
+    nodesToBeVisited = util.PriorityQueue()
     currentPos = currentState
-    costToCurrentNode = 0 
+    costToCurrentNode = 0
     costMap = {}
-    costMap[currentPos] = costToCurrentNode  
+    costMap[currentPos] = costToCurrentNode
     parent = {}
     direction = {}
     #pdb.set_trace()
+
+    "Start UCS implementation"
     while not problem.isGoalState(currentPos):
         #print 'Current State is :',currentPos
         nodesVisited.push(currentPos)
         currentSuccessors = problem.getSuccessors(currentPos)
-        #print 'Current Successors are :',currentSuccessors        
-        for successor in currentSuccessors:                       
+        #print 'Current Successors are :',currentSuccessors
+
+        "Loop through all successors of current node"
+        for successor in currentSuccessors:
             if successor[0] in nodesVisited.list:
-                continue      
+                continue
             elif successor[0] in (val[2] for val in nodesToBeVisited.heap):
                 costToCurrentSuccessor = costToCurrentNode + successor[2]
                 if costToCurrentSuccessor<costMap[successor[0]]:
                     parent[successor[0]] = currentPos
                     direction[successor[0]] = successor[1]
-                continue   
-                   
+                continue
+
             else:
+                "Update the cost to successors"
                 costToCurrentSuccessor = costToCurrentNode + successor[2]
                 costMap[successor[0]] = costToCurrentSuccessor
+
+                "Add successor to the nodesToBeVisited priority Queue"
                 nodesToBeVisited.push(successor[0],costToCurrentSuccessor)
                 parent[successor[0]] = currentPos
                 direction[successor[0]] = successor[1]
+        "Choose new node"
         currentPos = nodesToBeVisited.pop();
         costToCurrentNode = costMap[currentPos]
-    goal = currentPos  
+    goal = currentPos
     #print 'Final current position is :',currentPos
     path = []
     way = []
-    current = goal    
+    current = goal
+
+    "Get the path by retracing"
     while current!=problem.getStartState():
         path.append(current)
         way.append(direction[current])
         current = parent[current]
     path.append(problem.getStartState())
     path.reverse()
-    way.reverse()    
+    way.reverse()
     return way
     util.raiseNotDefined()
 
@@ -292,6 +323,9 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    #This code is written by Ankit Vora for the course CS188.x
+
+    "Implement Astar"
     import pdb
 
     try:
@@ -309,25 +343,27 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     if flagA==True:
         startState = problem.getStartState()
         nodesVisited = util.Queue()
-        nodesToBeVisited = util.PriorityQueue()  
+        nodesToBeVisited = util.PriorityQueue()
         currentPos = startState
         finalPath = []
+
+        "Implement Astar to eat food at four corners"
         while problem.count!=4:
             problem.goal = problem.corners[problem.goalOrder[problem.count]]
-            costToCurrentNode = 0 
+            costToCurrentNode = 0
             costFromStartMap = {}
             totalCostMap = {}
-            costFromStartMap[currentPos] = costToCurrentNode  
+            costFromStartMap[currentPos] = costToCurrentNode
             totalCostMap[currentPos] = costToCurrentNode + heuristic(currentPos,problem)
             parent = {}
             direction = {}
             #pdb.set_trace()
-            while problem.goal!=currentPos:                
-                nodesVisited.push(currentPos)                
+            while problem.goal!=currentPos:
+                nodesVisited.push(currentPos)
                 currentSuccessors = problem.getSuccessors(currentPos)
-                for successor in currentSuccessors:                       
+                for successor in currentSuccessors:
                     if successor[0] in nodesVisited.list:
-                        continue      
+                        continue
                     elif successor[0] in (val[2] for val in nodesToBeVisited.heap):
                         costToCurrentSuccessor = costToCurrentNode + successor[2]
                         totalCostToCurrentSuccessor = costToCurrentSuccessor + heuristic(successor[0],problem)
@@ -337,9 +373,11 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                             nodesToBeVisited.push(successor[0],totalCostToCurrentSuccessor)
                             parent[successor[0]] = currentPos
                             direction[successor[0]] = successor[1]
-                        continue                           
+                        continue
                     else:
                         costToCurrentSuccessor = costToCurrentNode + successor[2]
+
+                        "Total cost here is cost to node + heuristic"
                         totalCostToCurrentSuccessor = costToCurrentSuccessor + heuristic(successor[0],problem)
                         costFromStartMap[successor[0]] = costToCurrentSuccessor
                         totalCostMap[successor[0]] = totalCostToCurrentSuccessor
@@ -348,12 +386,14 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                         direction[successor[0]] = successor[1]
                 currentPos = nodesToBeVisited.pop();
                 costToCurrentNode = costFromStartMap[currentPos]
-            goal = currentPos  
+            goal = currentPos
             #print 'goal is :',problem.goal
             #print 'heuristic is :',heuristic(currentPos,problem)
             path = []
             way = []
             current = goal
+
+            "Get the path"
             while current!=startState:
                 path.append(current)
                 way.append(direction[current])
@@ -361,49 +401,51 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             path.append(startState)
             path.reverse()
             way.reverse()
-            finalPath.append(way)  
+            finalPath.append(way)
             startState = goal
             nodesVisited = util.Queue()
-            nodesToBeVisited = util.PriorityQueue()                
+            nodesToBeVisited = util.PriorityQueue()
             parent = {}
             #print 'is here'
             #print problem.goalState
             direction = {}
             problem.count = problem.count + 1
-            #print 'count is :',problem.count                
+            #print 'count is :',problem.count
         merged = []
         for element in finalPath:
             merged = merged + element
-        finalPath = merged        
-        return finalPath      
+        finalPath = merged
+        return finalPath
         util.raiseNotDefined()
+
+    "modified A star for certain test case. Steps are almost the same as previous implementation"
     elif flagB==True:
-        startState = problem.getStartState() 
+        startState = problem.getStartState()
         currentPos = startState[0]
         currentState = startState
-        finalPath = []        
+        finalPath = []
         while not problem.isGoalState(currentState):
             nodesVisited = util.Queue()
-            nodesToBeVisited = util.PriorityQueue() 
-            costToCurrentNode = 0 
+            nodesToBeVisited = util.PriorityQueue()
+            costToCurrentNode = 0
             costFromStartMap = {}
             totalCostMap = {}
-            costFromStartMap[currentPos] = costToCurrentNode              
-            problem.goal = problem.getGoal(currentState)        
+            costFromStartMap[currentPos] = costToCurrentNode
+            problem.goal = problem.getGoal(currentState)
             #print problem.goal
             totalCostMap[currentPos] = costToCurrentNode + heuristic(currentState,problem)
             #pdb.set_trace()
             parent = {}
-            direction = {}       
+            direction = {}
             #print 'Current State is :',currentPos
             while currentPos!=problem.goal:
                 nodesVisited.push(currentPos)
                 currentSuccessors = problem.getSuccessors(currentState)
-                
-                #print 'Current Successors are :',currentSuccessors        
-                for successor in currentSuccessors:                       
+
+                #print 'Current Successors are :',currentSuccessors
+                for successor in currentSuccessors:
                     if successor[0][0] in nodesVisited.list:
-                        continue      
+                        continue
                     elif successor[0][0] in (val[2][0] for val in nodesToBeVisited.heap):
                         costToCurrentSuccessor = costToCurrentNode + successor[2]
                         totalCostToCurrentSuccessor = costToCurrentSuccessor + heuristic(successor[0],problem)
@@ -413,8 +455,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                             nodesToBeVisited.push(successor[0],totalCostToCurrentSuccessor)
                             parent[successor[0][0]] = currentPos
                             direction[successor[0][0]] = successor[1]
-                        continue   
-                           
+                        continue
+
                     else:
                         costToCurrentSuccessor = costToCurrentNode + successor[2]
                         totalCostToCurrentSuccessor = costToCurrentSuccessor + heuristic(successor[0],problem)
@@ -426,7 +468,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                 currentState = nodesToBeVisited.pop();
                 currentPos = currentState[0]
                 costToCurrentNode = costFromStartMap[currentPos]
-            #pdb.set_trace()  
+            #pdb.set_trace()
             #print 'Final current position is :',currentPos
             path = []
             way = []
@@ -438,39 +480,41 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             path.append(startState)
             path.reverse()
             way.reverse()
-            finalPath.append(way)  
+            finalPath.append(way)
             #pdb.set_trace()
-            startState = currentState  
-             
-            #print currentState[0],problem.getGoal(currentState),currentState[1].asList()        
+            startState = currentState
+
+            #print currentState[0],problem.getGoal(currentState),currentState[1].asList()
         merged = []
         for element in finalPath:
             merged = merged + element
-        finalPath = merged        
-        return finalPath      
-        util.raiseNotDefined()   
+        finalPath = merged
+        return finalPath
+        util.raiseNotDefined()
+
+    "modified A star for certain test case. Steps are almost the same as previous implementation"
     else:
         currentState = problem.getStartState()
         nodesVisited = util.Queue()
-        nodesToBeVisited = util.PriorityQueue()  
+        nodesToBeVisited = util.PriorityQueue()
         currentPos = currentState
-        costToCurrentNode = 0 
+        costToCurrentNode = 0
         costFromStartMap = {}
         totalCostMap = {}
-        costFromStartMap[currentPos] = costToCurrentNode  
+        costFromStartMap[currentPos] = costToCurrentNode
         #pdb.set_trace()
         totalCostMap[currentPos] = costToCurrentNode + heuristic(currentPos,problem)
         parent = {}
-        direction = {}        
+        direction = {}
         #pdb.set_trace()
         while not problem.isGoalState(currentPos):
             #print 'Current State is :',currentPos
             nodesVisited.push(currentPos)
             currentSuccessors = problem.getSuccessors(currentPos)
-            #print 'Current Successors are :',currentSuccessors        
-            for successor in currentSuccessors:                       
+            #print 'Current Successors are :',currentSuccessors
+            for successor in currentSuccessors:
                 if successor[0] in nodesVisited.list:
-                    continue      
+                    continue
                 elif successor[0] in (val[2] for val in nodesToBeVisited.heap):
                     costToCurrentSuccessor = costToCurrentNode + successor[2]
                     totalCostToCurrentSuccessor = costToCurrentSuccessor + heuristic(successor[0],problem)
@@ -480,8 +524,8 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                         nodesToBeVisited.push(successor[0],totalCostToCurrentSuccessor)
                         parent[successor[0]] = currentPos
                         direction[successor[0]] = successor[1]
-                    continue   
-                       
+                    continue
+
                 else:
                     costToCurrentSuccessor = costToCurrentNode + successor[2]
                     totalCostToCurrentSuccessor = costToCurrentSuccessor + heuristic(successor[0],problem)
@@ -492,7 +536,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                     direction[successor[0]] = successor[1]
             currentPos = nodesToBeVisited.pop();
             costToCurrentNode = costFromStartMap[currentPos]
-        goal = currentPos  
+        goal = currentPos
         #print 'Final current position is :',currentPos
         path = []
         way = []
@@ -503,11 +547,11 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             current = parent[current]
         path.append(problem.getStartState())
         path.reverse()
-        way.reverse()    
+        way.reverse()
         return way
-        util.raiseNotDefined()    
-    
- 
+        util.raiseNotDefined()
+
+
 
 # Abbreviations
 bfs = breadthFirstSearch

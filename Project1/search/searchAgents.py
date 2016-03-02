@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -288,11 +288,13 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        #This code is written by Ankit Vora for the course CS188.x
+
         self.costFn = costFn
         self.goalState = {}
         for corner in self.corners:
-            self.goalState[corner] = False          
-        self.count = 0    
+            self.goalState[corner] = False
+        self.count = 0
         self.goalOrder = [0,1,3,2]
         self.goal = self.corners[self.goalOrder[self.count]]
         print self.corners
@@ -312,6 +314,8 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        #This code is written by Ankit Vora for the course CS188.x
+
         if state in self.corners:
             self.goalState[state] = True
         return state==self.goal
@@ -340,7 +344,7 @@ class CornersProblem(search.SearchProblem):
                 nextState = (nextx, nexty)
                 cost = self.costFn(nextState)
                 successors.append(( nextState, action, cost) )
-            "*** YOUR CODE HERE ***"          
+            "*** YOUR CODE HERE ***"
         self._expanded += 1 # DO NOT CHANGE
         return successors
 
@@ -375,18 +379,20 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    
-    if problem.isGoalState(state):       
+    #This code is written by Ankit Vora for the course CS188.x
+
+
+    if problem.isGoalState(state):
         problem.count = problem.count+1
         if problem.count>3:
             problem.count = 3
         print problem.goal,state,problem.count
-        problem.goal = problem.corners[problem.goalOrder[problem.count]]           
+        problem.goal = problem.corners[problem.goalOrder[problem.count]]
         return 0
     xy1 = state
     xy2 = problem.goal
     return ( (xy1[0] - xy2[0]) ** 2 + (xy1[1] - xy2[1]) ** 2 ) ** 0.5
-    
+
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
     def __init__(self):
@@ -445,7 +451,7 @@ class FoodSearchProblem:
         return cost
 
     def getGoal(self, state):
-        import pdb        
+        import pdb
         #pdb.set_trace()
         position, foodGrid = state
         distanceToFood = {}
@@ -491,17 +497,19 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
-    position, foodGrid = state    
+    position, foodGrid = state
     "*** YOUR CODE HERE ***"
+    #This code is written by Ankit Vora for the course CS188.x
+
     if not problem.goal:
         if not foodGrid.asList():
             return 0
         else:
-            problem.goal = problem.getGoal(state)                  
+            problem.goal = problem.getGoal(state)
     xy1 = position
     xy2 = problem.goal
     return ( (xy1[0] - xy2[0]) ** 2 + (xy1[1] - xy2[1]) ** 2 ) ** 0.5
-  
+
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -526,32 +534,34 @@ class ClosestDotSearchAgent(SearchAgent):
         gameState.
         """
         # Here are some useful elements of the startState
+        # This code is written by Ankit Vora for the course CS188.x
+
         startPosition = gameState.getPacmanPosition()
         food = gameState.getFood()
         walls = gameState.getWalls()
-        problem = AnyFoodSearchProblem(gameState)           
+        problem = AnyFoodSearchProblem(gameState)
         #print startPosition, food.asList()
         self.goal = self.getGoal(gameState)
         nodesVisited = util.Queue()
-        nodesToBeVisited = util.PriorityQueue()  
+        nodesToBeVisited = util.PriorityQueue()
         currentPos = startPosition
-        #costToCurrentNode = 0 
+        #costToCurrentNode = 0
         #costFromStartMap = {}
         totalCostMap = {}
-        #costFromStartMap[currentPos] = costToCurrentNode  
+        #costFromStartMap[currentPos] = costToCurrentNode
         #pdb.set_trace()
         totalCostMap[currentPos] = euclideanHeuristic(currentPos,self)
         parent = {}
-        direction = {}        
+        direction = {}
         #pdb.set_trace()
         while currentPos!=self.goal:
             #print 'Current State is :',currentPos
             nodesVisited.push(currentPos)
             currentSuccessors = problem.getSuccessors(currentPos)
-            #print 'Current Successors are :',currentSuccessors        
-            for successor in currentSuccessors:                       
+            #print 'Current Successors are :',currentSuccessors
+            for successor in currentSuccessors:
                 if successor[0] in nodesVisited.list:
-                    continue      
+                    continue
                 elif successor[0] in (val[2] for val in nodesToBeVisited.heap):
                     #costToCurrentSuccessor = costToCurrentNode + successor[2]
                     totalCostToCurrentSuccessor = euclideanHeuristic(successor[0],self)
@@ -561,8 +571,8 @@ class ClosestDotSearchAgent(SearchAgent):
                         nodesToBeVisited.push(successor[0],totalCostToCurrentSuccessor)
                         parent[successor[0]] = currentPos
                         direction[successor[0]] = successor[1]
-                    continue   
-                       
+                    continue
+
                 else:
                     #costToCurrentSuccessor = costToCurrentNode + successor[2]
                     totalCostToCurrentSuccessor = euclideanHeuristic(successor[0],self)
@@ -573,7 +583,7 @@ class ClosestDotSearchAgent(SearchAgent):
                     direction[successor[0]] = successor[1]
             currentPos = nodesToBeVisited.pop();
             #costToCurrentNode = costFromStartMap[currentPos]
-        goal = currentPos  
+        goal = currentPos
         #print 'Final current position is :',currentPos
         path = []
         way = []
@@ -584,17 +594,19 @@ class ClosestDotSearchAgent(SearchAgent):
             current = parent[current]
         path.append(problem.getStartState())
         path.reverse()
-        way.reverse()    
+        way.reverse()
         return way
 
 
 
 
         "*** YOUR CODE HERE ***"
+        #This code is written by Ankit Vora for the course CS188.x
+
         util.raiseNotDefined()
 
     def getGoal(self, gamestate):
-        import pdb        
+        import pdb
         #pdb.set_trace()
         position = gamestate.getPacmanPosition()
         foodGrid = gamestate.getFood()
