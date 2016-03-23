@@ -417,8 +417,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         finalPath = merged
         return finalPath
         util.raiseNotDefined()
-
-    "modified A star for certain test case. Steps are almost the same as previous implementation"
     elif flagB==True:
         startState = problem.getStartState()
         currentPos = startState[0]
@@ -491,8 +489,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         finalPath = merged
         return finalPath
         util.raiseNotDefined()
-
-    "modified A star for certain test case. Steps are almost the same as previous implementation"
+#Modified A star
     else:
         currentState = problem.getStartState()
         nodesVisited = util.Queue()
